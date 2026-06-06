@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jakob Klement</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --fg: #f5f5f7;
+      --muted: #8a8a99;
+      --accent: #6c63ff;
+      --accent-2: #00d4ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100svh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: 0;
+      animation: float 14s ease-in-out infinite, pulse 5s ease-in-out infinite;
+    }
+    .glow.one { width: 480px; height: 480px; background: var(--accent); top: -120px; left: -100px; }
+    .glow.two { width: 420px; height: 420px; background: var(--accent-2); bottom: -140px; right: -80px; animation-delay: -7s, -2.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; scale: 1; }
+      50%      { opacity: 0.7;  scale: 1.18; }
+    }
+
+    .field {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .dock {
+      position: fixed;
+      bottom: 1.6rem;
+      left: 2rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .dock-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      padding-left: 2px;
+    }
+
+    .nav-item {
+      font-weight: 900;
+      font-size: clamp(2.2rem, 7vw, 2.6rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(245, 245, 247, 0.75);
+      transition: -webkit-text-stroke 0.3s ease,
+                  color 0.3s ease,
+                  transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .nav-item:hover {
+      color: var(--fg);
+      -webkit-text-stroke: 1.5px var(--accent-2);
+      transform: translateX(8px);
+    }
+
+    @media (max-width: 600px) {
+      .dock { left: 1.4rem; bottom: 1.4rem; }
+      .dock-title { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <canvas class="field" id="field" aria-hidden="true"></canvas>
+  <div class="noise"></div>
+
+  <nav class="dock">
+    <p class="dock-title">Contact</p>
+    <a class="nav-item" href="https://www.linkedin.com/in/jakob-klement/" target="_blank" rel="noopener">LinkedIn</a>
+  </nav>
+
+  <script>
+    const canvas = document.getElementById('field');
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W, H, target;
+
+    function resize() {
+      W = canvas.width = innerWidth * dpr;
+      H = canvas.height = innerHeight * dpr;
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
+      target = { x: 80 * dpr, y: H - 80 * dpr };
+    }
+    addEventListener('resize', resize);
+    resize();
+
+    const SP = 78 * dpr;
+    const LEN = 20 * dpr;
+
+    function drawArrow(x, y, ang, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(ang);
+      ctx.strokeStyle = 'rgba(0, 212, 255, ' + alpha + ')';
+      ctx.lineWidth = 1.4 * dpr;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      const h = LEN / 2, head = 5 * dpr;
+      ctx.beginPath();
+      ctx.moveTo(-h, 0);
+      ctx.lineTo(h, 0);
+      ctx.moveTo(h - head, -head);
+      ctx.lineTo(h, 0);
+      ctx.lineTo(h - head, head);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function draw(time) {
+      ctx.clearRect(0, 0, W, H);
+      const t = time * 0.001;
+      for (let y = SP / 2; y < H; y += SP) {
+        for (let x = SP / 2; x < W; x += SP) {
+          const dx = target.x - x, dy = target.y - y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 230 * dpr) continue;
+          const ang = Math.atan2(dy, dx);
+          const wave = Math.sin(dist * 0.012 - t * 2.2);
+          const alpha = 0.1 + 0.22 * (wave * 0.5 + 0.5);
+          drawArrow(x, y, ang, alpha);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
