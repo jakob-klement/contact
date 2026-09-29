@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jakob Klement</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #fafaf9; --fg: #111; --muted: #8a8a8a; --line: #e4e4e2; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0c0c0c; --fg: #ededed; --muted: #6f6f6f; --line: #232323; }
+    }
+    * { margin: 0; box-sizing: border-box; }
+    body {
+      font: 0.95rem 'Geist', system-ui, sans-serif;
+      background: var(--bg); color: var(--fg);
+      min-height: 100svh; display: grid; place-items: center; padding: 2rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    main { width: 100%; max-width: 28rem; }
+    h1 { font: 400 1.6rem 'Instrument Serif', serif; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 1.25rem 0; }
+    p { display: flex; justify-content: space-between; color: var(--muted); }
+    p + p { margin-top: 0.5rem; }
+    h2 { font-size: inherit; font-weight: 400; color: var(--muted); margin-bottom: 0.75rem; }
+    ul { list-style: none; padding: 0; }
+    li + li { margin-top: 0.75rem; }
+    li { display: flex; gap: 0.9rem; align-items: center; }
+    .logo { flex: none; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); border-radius: 8px; }
+    .logo img { width: 100%; height: 100%; }
+    @media (prefers-color-scheme: dark) { .logo img { filter: invert(1); } }
+    li span { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+    a {
+      color: var(--fg); text-decoration: none;
+      background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+      transition: background-size 0.3s;
+      -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    }
+    a:hover, a:focus-visible { background-size: 100% 1px; }
+    a::after { content: "↗"; margin-left: 0.3em; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Jakob Klement</h1>
+    <hr />
+    <p>Work <a href="https://www.eraneos.com/services/data-ai/?country=de">Eraneos</a></p>
+    <p>Contact <a href="https://www.linkedin.com/in/jakob-klement/">LinkedIn</a></p>
+    <hr />
+    <h2>Latest publication</h2>
+    <ul>
+      <li>
+        <div class="logo"><img src="https://www.eraneos.com/wp-content/uploads/2026/07/cropped-Eraneos_Favicon_Black-192x192.png" alt="" /></div>
+        <div>
+          <a href="https://www.eraneos.com/whitepapers/redesigning-for-ai-the-process-building-blocks-for-enterprise-transformation/">Redesigning for AI: The process building blocks for enterprise transformation</a>
+          <span>Whitepaper · 2025</span>
+        </div>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>

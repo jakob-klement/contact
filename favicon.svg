@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<style>rect{fill:#fafaf9}path{fill:#111}@media(prefers-color-scheme:dark){rect{fill:#0c0c0c}path{fill:#ededed}}</style>
+<rect width="32" height="32" rx="6"/>
+<path shape-rendering="crispEdges" d="M9 9h6v2h-6zM13 11h2v2h-2zM13 13h2v2h-2zM13 15h2v2h-2zM5 17h2v2h-2zM13 17h2v2h-2zM5 19h2v2h-2zM13 19h2v2h-2zM7 21h6v2h-6zM17 9h2v2h-2zM25 9h2v2h-2zM17 11h2v2h-2zM23 11h2v2h-2zM17 13h2v2h-2zM21 13h2v2h-2zM17 15h4v2h-4zM17 17h2v2h-2zM21 17h2v2h-2zM17 19h2v2h-2zM23 19h2v2h-2zM17 21h2v2h-2zM25 21h2v2h-2z"/>
+</svg>
